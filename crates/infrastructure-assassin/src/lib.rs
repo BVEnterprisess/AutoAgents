@@ -13,6 +13,9 @@ pub mod orchestration;
 pub mod security;
 pub mod tools;
 
+// Re-export key orchestrators for easy access
+pub use tools::mcp_orchestrator::{McpGalaxyOrchestrator, orchestrate_mcp_tools, initialize_mcp_orchestrator};
+
 use autoagents_core::{agent::Agent, tool::Tool, runtime::Runtime};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
