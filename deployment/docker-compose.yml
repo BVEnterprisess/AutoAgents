@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  infrastructure-assassin:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: infrastructure-assassin-enterprise
+    ports:
+      - "8080:8080"          # Main API endpoint
+      - "8081:8081"          # Metrics dashboard
+      - "8082:8082"          # Health checks
+    environment:
+      - INFRASTRUCTURE_ASSASSIN_PORT=8080
+      - INFRASTRUCTURE_ASSASSIN_METRICS_PORT=8081
+      - INFRASTRUCTURE_ASSASSIN_HEALTH_PORT=8082
+      - INFRASTRUCTURE_ASSASSIN_LOG_LEVEL=info
+      - INFRASTRUCTURE_ASSASSIN_MAX_SESSIONS=10
+      - INFRASTRUCTURE_ASSASSIN_MAX_MEMORY_MB=512
+      - INFRASTRUCTURE_ASSASSIN_ENTERPRISE_MODE=true
+      - MCP_SERVERS_PATH=/app/mcp-servers
+      - MCP_CONFIG_PATH=/app/config/mcp-config.json
+    volumes:
+      - infrastructure-assassin-data:/app/data
+      - infrastructure-assassin-logs:/app/logs
+      - infrastructure-assassin-cache:/app/cache
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+
+volumes:
+  infrastructure-assassin-data:
+    driver: local
+  infrastructure-assassin-logs:
+    driver: local
+  infrastructure-assassin-cache:
+    driver: local
+
+networks:
+  default:
+    driver: bridge
