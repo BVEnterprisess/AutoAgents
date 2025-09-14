@@ -12,9 +12,11 @@ pub mod browser;
 pub mod orchestration;
 pub mod security;
 pub mod tools;
+pub mod unified_api;
 
 // Re-export key orchestrators for easy access
 pub use tools::mcp_orchestrator::{McpGalaxyOrchestrator, orchestrate_mcp_tools, initialize_mcp_orchestrator};
+pub use unified_api::{InfrastructureAssassinEngine, UnifiedExecutionResult};
 
 use autoagents_core::{agent::Agent, tool::Tool, runtime::Runtime};
 use serde::{Deserialize, Serialize};
