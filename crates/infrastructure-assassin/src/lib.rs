@@ -22,6 +22,7 @@ pub mod security {
 // Analytics modules
 pub mod analytics {
     pub mod revenue;
+    pub mod performance;
 }
 
 // Re-export key orchestrators for easy access
