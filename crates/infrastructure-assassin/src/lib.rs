@@ -19,6 +19,11 @@ pub mod security {
     pub mod enforcer;
 }
 
+// Analytics modules
+pub mod analytics {
+    pub mod revenue;
+}
+
 // Re-export key orchestrators for easy access
 pub use tools::mcp_orchestrator::{McpGalaxyOrchestrator, orchestrate_mcp_tools, initialize_mcp_orchestrator};
 pub use unified_api::{InfrastructureAssassinEngine, UnifiedExecutionResult};
