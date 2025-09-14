@@ -1,9 +1,26 @@
 <div align="center">
   <img src="assets/logo.png" alt="AutoAgents Logo" width="200" height="200">
 
-# AutoAgents
+# 🚨 **CLASSIFIED: INFRASTRUCTURE ASSASSIN DEVELOPMENT REPOSITORY**
 
-**A Modern Multi-Agent Framework in Rust**
+**🔐 PRIVATE & PROPRIETARY - RESTRICTED ACCESS ONLY**
+
+**CRITICAL SECURITY NOTICE:** This repository contains **Infrastructure Assassin** - a $2.5M/enterprise customer revenue-generating platform that disrupts AWS/Google infrastructure economics. Access is strictly limited to authorized development team members only.
+
+**[📋 PROPRIETARY LICENSE](PROPRIETARY_LICENSE) | [🚫 RULE MASTER](RULE_MASTER.md) | [📊 DEVELOPMENT PLAN](implementation_plan.md)**
+
+---
+
+# AutoAgents + Infrastructure Assassin
+
+**Formerly** a Modern Multi-Agent Framework in Rust
+**Now** Revenue-Generating Infrastructure Disruption Technology
+
+⚠️ **This repository has been LOCKED DOWN due to classified development content**
+
+---
+
+## 🔐 **SECURITY CLEARANCE REQUIRED**
 
 [![Crates.io](https://img.shields.io/crates/v/autoagents.svg)](https://crates.io/crates/autoagents)
 [![Documentation](https://docs.rs/autoagents/badge.svg)](https://liquidos-ai.github.io/AutoAgents)

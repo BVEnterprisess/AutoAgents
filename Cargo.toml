@@ -4,6 +4,7 @@ default-members = [
     "crates/core",
     "crates/llm",
     "crates/derive",
+    "crates/infrastructure-assassin",
 ]
 members = [
     "crates/core",
@@ -13,6 +14,7 @@ members = [
     "crates/derive",
     "crates/test_utils",
     "crates/liquid-edge",
+    "crates/infrastructure-assassin",
 ]
 
 exclude = ["examples/wasm_tool"]
@@ -35,6 +37,7 @@ autoagents-llm = { path = "crates/llm", version = "0.2.3" }
 autoagents-derive = { path = "crates/derive", version = "0.2.3" }
 autoagents-core = { path = "crates/core", version = "0.2.3" }
 autoagents-test-utils = { path = "crates/test_utils" }
+infrastructure-assassin = { path = "crates/infrastructure-assassin", version = "0.2.3" }
 liquid-edge = { path = "crates/liquid-edge", version = "0.2.3" }
 syn = { version = "2.0.98", features = ["full"] }
 tokio = { version = "1.43.0", features = ["full"] }
