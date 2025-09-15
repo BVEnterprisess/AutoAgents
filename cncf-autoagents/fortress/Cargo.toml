@@ -1,0 +1,50 @@
+[package]
+name = "fortress"
+version = "0.1.0"
+edition = "2021"
+description = "Bulletproof Linkerd2-proxy inspired gateway with MCP registry integration"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+# Workspace dependencies
+tokio.workspace = true
+hyper.workspace = true
+tower.workspace = true
+tower-http.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+config.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+redis.workspace = true
+jsonwebtoken.workspace = true
+rustls.workspace = true
+rustls-pemfile.workspace = true
+prometheus.workspace = true
+lazy_static.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+futures.workspace = true
+clap.workspace = true
+
+# Additional fortress-specific dependencies
+# MCP integration - BVEnterprisess registry
+bv-enterprise-mcp.workspace = true
+
+# HTTP client for upstream requests
+reqwest = { version = "0.12", features = ["json", "rustls-tls"] }
+
+# Regex for route matching and security
+regex = "1.10"
+
+# Base64 for auth tokens
+base64 = "0.22"
+
+# Additional security
+ring = "0.17"
+
+[dev-dependencies]
+tokio-test.workspace = true
+tempfile.workspace = true

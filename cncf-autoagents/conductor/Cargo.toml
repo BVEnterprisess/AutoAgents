@@ -1,0 +1,38 @@
+[package]
+name = "conductor"
+version = "0.1.0"
+edition = "2021"
+description = "Agent orchestration engine for the CNCF AutoAgents stack"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+# Workspace dependencies
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+redis.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+futures.workspace = true
+clap.workspace = true
+
+# HTTP client for communication with Fortress and Forge
+reqwest = { version = "0.12", features = ["json", "rustls-tls"] }
+
+# Additional conductor-specific dependencies
+# Message queue for job processing
+lapin.workspace = true
+
+# Task scheduling
+cron = "0.12"
+
+# Expression evaluation for agent logic
+evalexpr = "11.0"
+
+[dev-dependencies]
+tokio-test.workspace = true
+tempfile.workspace = true

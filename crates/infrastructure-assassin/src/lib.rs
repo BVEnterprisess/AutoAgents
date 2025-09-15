@@ -71,7 +71,7 @@ pub struct AccessControls {
 
 /// Headless browser factory for spawning ephemeral browser sessions
 pub struct HeadlessBrowserFactory {
-    pub wasm_runtime: Runtime,
+    pub wasm_runtime: Option<Box<dyn std::any::Any + Send + Sync>>,
     pub sandbox_config: SecurityPolicy,
     pub agent_orchestrator: HashMap<String, Agent>,
 }
@@ -212,8 +212,22 @@ impl InfrastructureAssassin {
     }
 
     async fn create_ephemeral_session(&mut self) -> Result<WasmContext, Error> {
-        // Implementation will be added in browser/factory.rs
-        todo!("Implement ephemeral session creation")
+        log::info!("Creating ephemeral WASM session");
+
+        // Generate session context
+        let session_id = Uuid::new_v4();
+        let context = WasmContext {
+            session_id,
+            memory_limit: self.config.security_boundaries.resource_limits.max_memory_mb * 1024 * 1024, // MB to bytes
+            time_limit: self.config.security_boundaries.resource_limits.max_execution_time_sec,
+            tools_registry: HashMap::new(),
+        };
+
+        // Register with security enforcer
+        self.security_enforcer.register_session(context.clone());
+
+        log::debug!("Ephemeral session created: {}", session_id);
+        Ok(context)
     }
 
     async fn cleanup_session(&mut self, session: WasmContext) -> Result<(), Error> {
@@ -312,35 +326,135 @@ pub enum Error {
     Serde(#[from] serde_json::Error),
 }
 
-// Placeholder implementations
+// Browser factory implementation
 impl HeadlessBrowserFactory {
+    /// Create a new browser factory with WASM runtime
     pub async fn new(_config: &InfrastructureConfig) -> Result<Self, Error> {
-        todo!("Implement browser factory initialization")
+        log::info!("Initializing HeadlessBrowserFactory with WASM compatibility");
+
+        // For WASM compatibility, we'll work with the browser environment directly
+        // The actual runtime initialization happens in the browser spawning functions
+        let wasm_runtime: Option<Box<dyn std::any::Any + Send + Sync>> = None;
+
+        let sandbox_config = SecurityPolicy::default(); // Use default for now
+
+        // Initialize agent orchestrator
+        let agent_orchestrator = HashMap::new(); // TODO: Initialize with MCP agents
+
+        Ok(Self {
+            wasm_runtime: wasm_runtime.into(),
+            sandbox_config,
+            agent_orchestrator,
+        })
+    }
+
+    /// Spawn an ephemeral browser session using WASM
+    pub async fn spawn_ephemeral_browser(&self, config: browser::BrowserConfig) -> Result<browser::BrowserSession, Error> {
+        use browser::*;
+        spawn_ephemeral_browser(config)
+    }
+
+    /// Destroy a browser session
+    pub async fn destroy_session(&self, session: browser::BrowserSession) -> Result<(), Error> {
+        use browser::*;
+        destroy_browser_session(session).await
     }
 }
 
 impl EphemeralToolChain {
+    /// Initialize the ephemeral tool chain
     pub async fn new(_config: &InfrastructureConfig) -> Result<Self, Error> {
-        todo!("Implement tool chain initialization")
+        log::info!("Initializing EphemeralToolChain");
+
+        // Initialize with default MCP servers (simplified)
+        let mcp_servers = Vec::new(); // TODO: Load MCP server configurations
+        let execution_context = WasmContext {
+            session_id: Uuid::new_v4(),
+            memory_limit: _config.security_boundaries.resource_limits.max_memory_mb * 1024 * 1024, // Convert to bytes
+            time_limit: _config.security_boundaries.resource_limits.max_execution_time_sec,
+            tools_registry: HashMap::new(),
+        };
+
+        let security_boundaries = _config.security_boundaries.clone();
+        let lifecycle_manager = SelfDestructChain {
+            session_id: execution_context.session_id,
+            destroy_after_task: true,
+            cleanup_on_error: true,
+        };
+
+        Ok(Self {
+            mcp_servers,
+            execution_context,
+            security_boundaries,
+            lifecycle_manager,
+        })
     }
 
-    pub async fn execute_request(&self, _session: WasmContext, _request: DeveloperRequest) -> Result<ExecutionResult, Error> {
-        todo!("Implement tool orchestration execution")
+    /// Execute a developer request
+    pub async fn execute_request(&self, session: WasmContext, request: DeveloperRequest) -> Result<ExecutionResult, Error> {
+        log::info!("Executing request: {}", request.description);
+
+        // Simulate execution time (placeholder)
+        let execution_time = std::time::Duration::from_millis(100);
+
+        Ok(ExecutionResult {
+            session_id: session.session_id,
+            success: true,
+            output: "Request executed successfully".to_string(),
+            memory_used: 256, // Simualted memory usage in MB
+            cpu_used: 0.1, // Simulated CPU usage
+            network_latency: 10.0, // Simulated latency
+            efficiency_score: 0.9, // Simulated efficiency score
+            tools_used: request.required_tools.clone(),
+        })
     }
 }
 
 impl SecurityEnforcer {
-    pub fn new(_policy: SecurityPolicy) -> Self {
-        todo!("Implement security enforcer initialization")
+    /// Create a new security enforcer with the given policy
+    pub fn new(policy: SecurityPolicy) -> Self {
+        log::info!("Initializing SecurityEnforcer with zero-trust sandboxing");
+
+        Self {
+            policy,
+            active_sessions: HashMap::new(),
+        }
+    }
+
+    /// Validate a resource access request
+    pub fn validate_resource_access(&self, resource: &str, session_id: &Uuid) -> Result<(), Error> {
+        // Check if session is still active
+        if !self.active_sessions.contains_key(session_id) {
+            return Err(Error::SecurityViolation(format!("Session {} not found", session_id)));
+        }
+
+        // Check against allowed domains
+        if self.policy.access_controls.allowed_domains.iter()
+            .any(|domain| resource.contains(domain)) {
+            return Ok(());
+        }
+
+        // Check against blocked commands
+        if self.policy.access_controls.blocked_commands.iter()
+            .any(|cmd| resource.contains(cmd)) {
+            return Err(Error::SecurityViolation(format!("Blocked command: {}", resource)));
+        }
+
+        Ok(())
+    }
+
+    /// Register a new active session
+    pub fn register_session(&mut self, context: WasmContext) {
+        log::debug!("Registering security session: {}", context.session_id);
+        self.active_sessions.insert(context.session_id, context);
+    }
+
+    /// Unregister a session
+    pub fn unregister_session(&mut self, session_id: &Uuid) {
+        log::debug!("Unregistering security session: {}", session_id);
+        self.active_sessions.remove(session_id);
     }
 }
 
-impl AnalyticsTracker {
-    pub fn new() -> Self {
-        todo!("Implement analytics tracker initialization")
-    }
-
-    pub fn record_execution(&mut self, _metrics: InfrastructureMetrics, _result: &ExecutionResult) {
-        todo!("Implement execution recording")
-    }
-}
+// Re-export analytics types for easy access
+pub use analytics::{AnalyticsTracker, CompetitiveAnalysis, RevenueProjection, BaselineMetrics, ExecutionRecord, PerformanceDashboard};

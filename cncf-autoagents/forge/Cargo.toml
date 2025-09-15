@@ -1,0 +1,38 @@
+[package]
+name = "forge"
+version = "0.1.0"
+edition = "2021"
+description = "Zero-trust WASM execution sandbox using Fermyon Spin"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+# Workspace dependencies
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+futures.workspace = true
+
+# WASM runtime - Fermyon Spin SDK
+spin-sdk.workspace = true
+
+# HTTP client for communication
+reqwest = { version = "0.12", features = ["json", "rustls-tls"] }
+
+# Security and sandboxing
+ring.workspace = true
+
+# File system operations for WASM modules
+tokio = { workspace = true, features = ["fs"] }
+
+# Base64 for data encoding
+base64.workspace = true
+
+[dev-dependencies]
+tokio-test.workspace = true
+tempfile.workspace = true

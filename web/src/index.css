@@ -1,0 +1,309 @@
+/* Infrastructure Assassin Web App Styles */
+
+:root {
+  --ia-primary: #667eea;
+  --ia-secondary: #764ba2;
+  --ia-accent: #00ff88;
+  --ia-warning: #ff6b6b;
+  --ia-success: #4ade80;
+  --ia-background: #1a1a1a;
+  --ia-surface: #2d2d2d;
+  --ia-surface-hover: #404040;
+  --ia-text: #ffffff;
+  --ia-text-secondary: #cccccc;
+  --ia-text-muted: #888888;
+  --ia-border: #404040;
+  --ia-border-hover: #555555;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, var(--ia-background) 0%, #0a0a0a 100%);
+  color: var(--ia-text);
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ia-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ia-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ia-secondary);
+}
+
+/* Loading spinner */
+@keyframes ia-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ia-loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--ia-accent);
+  animation: ia-spin 1s ease-in-out infinite;
+}
+
+/* Status indicators */
+.ia-status-active {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ia-accent);
+  box-shadow: 0 0 10px var(--ia-accent);
+  animation: ia-pulse 2s infinite;
+}
+
+.ia-status-inactive {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ia-warning);
+}
+
+@keyframes ia-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Brand gradient text */
+.ia-brand {
+  background: linear-gradient(135deg, var(--ia-primary) 0%, var(--ia-secondary) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Card components */
+.ia-card {
+  background: rgba(45, 45, 45, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--ia-border);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.ia-card:hover {
+  border-color: var(--ia-border-hover);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Buttons */
+.ia-btn-primary {
+  background: linear-gradient(135deg, var(--ia-primary) 0%, var(--ia-secondary) 100%);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.ia-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+}
+
+.ia-btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--ia-border);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.ia-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--ia-primary);
+}
+
+.ia-btn-outline {
+  background: transparent;
+  border: 1px solid var(--ia-primary);
+  color: var(--ia-primary);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.ia-btn-outline:hover {
+  background: var(--ia-primary);
+  color: white;
+}
+
+/* Form elements */
+.ia-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ia-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: white;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.ia-input:focus {
+  outline: none;
+  border-color: var(--ia-primary);
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.ia-textarea {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ia-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: white;
+  font-size: 14px;
+  resize: vertical;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.ia-textarea:focus {
+  outline: none;
+  border-color: var(--ia-primary);
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.ia-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ia-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ia-select:focus {
+  outline: none;
+  border-color: var(--ia-primary);
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+/* Grid layouts */
+.ia-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.ia-grid-auto {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.ia-grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.ia-grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Flex utilities */
+.ia-flex {
+  display: flex;
+}
+
+.ia-flex-col {
+  flex-direction: column;
+}
+
+.ia-items-center {
+  align-items: center;
+}
+
+.ia-justify-center {
+  justify-content: center;
+}
+
+.ia-justify-between {
+  justify-content: space-between;
+}
+
+.ia-space-x-2 > * + * {
+  margin-left: 8px;
+}
+
+.ia-space-x-4 > * + * {
+  margin-left: 16px;
+}
+
+.ia-space-y-2 > * + * {
+  margin-top: 8px;
+}
+
+.ia-space-y-4 > * + * {
+  margin-top: 16px;
+}
+
+/* Spacing utilities */
+.ia-p-4 { padding: 16px; }
+.ia-p-6 { padding: 24px; }
+.ia-m-4 { margin: 16px; }
+.ia-m-auto { margin: auto; }
+
+/* Animation classes */
+@keyframes ia-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ia-slide-in {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.ia-animate-fade-in {
+  animation: ia-fade-in 0.3s ease-out;
+}
+
+.ia-animate-slide-in {
+  animation: ia-slide-in 0.3s ease-out;
+}
