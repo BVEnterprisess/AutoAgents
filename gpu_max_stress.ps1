@@ -580,7 +580,7 @@ function Start-GPUStressTest {
                             elseif ($util -ge 70) { "Yellow" }
                             else { "Red" }
 
-                    Write-Host "$($timestamp.ToString('HH:mm:ss')) | $($util.ToString().PadLeft(3))% | $($memUsed.ToString().PadLeft(6)) MB | $($memTotal.ToString().PadLeft(6)) MB | $($temp.ToString().PadLeft(3))C | $($power.ToString().PadLeft(4))W" -ForegroundColor $color
+                    Write-Host "$($timestamp.ToString('HH:mm:ss')) | $util% | $memUsed MB | $memTotal MB | $temp C | $power W" -ForegroundColor $color
 
                     # Progress indicator
                     if ($sampleCount % 10 -eq 0) {
