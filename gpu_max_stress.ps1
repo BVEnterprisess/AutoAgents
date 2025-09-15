@@ -257,7 +257,7 @@ int main() {
     auto endTime = std::chrono::high_resolution_clock::now();
     auto totalTime = std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime);
 
-    std::cout << "\\n🎯 GPU Stress Test Completed!" << std::endl;
+    std::cout << "\n🎯 GPU Stress Test Completed!" << std::endl;
     std::cout << "Total iterations: " << runIterations << std::endl;
     std::cout << "Total time: " << totalTime.count() << " seconds" << std::endl;
     std::cout << "Average time per iteration: "
@@ -393,7 +393,7 @@ def gpu_stress_test(duration_minutes=10):
     max_utilization = 0
     total_iterations = 0
 
-    print("\\n🔥 Starting GPU stress test...")
+    print("\n🔥 Starting GPU stress test...")
     print("Monitoring GPU utilization in real-time")
     print("-" * 60)
 
@@ -456,7 +456,7 @@ def gpu_stress_test(duration_minutes=10):
     total_time = time.time() - start_time
     final_memory = torch.cuda.memory_allocated(device) / 1024**3
 
-    print("\\n" + "=" * 60)
+    print("\n" + "=" * 60)
     print("🎯 GPU STRESS TEST COMPLETED!")
     print("=" * 60)
     print(f"⏱️  Total time: {total_time:.1f} seconds")

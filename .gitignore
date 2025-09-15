@@ -77,3 +77,57 @@ examples/wasm_tool/target/
 *.pem
 secrets/
 private/
+
+# Build artifacts and temporary files
+*.exe
+*.dll
+*.lib
+*.pdb
+*.wasm
+*.wat
+gpu_stress.cu
+gpu_stress_cuda.exe
+gpu_stress_pytorch.py
+sync_monitor.log
+health_thresholds.json
+.cargo/config.toml
+
+# CUDA and GPU related files
+*.ptx
+*.cubin
+*.fatbin
+cuda-build/
+nvcc.log
+
+# Performance and benchmark data
+benchmarks/
+performance_reports/
+*.benchmark
+*.perf
+
+# Log files
+logs/
+*.log
+sync.log
+gpu_monitor.log
+system_health.log
+
+# Temporary build directories
+build/
+dist/
+pkg/
+wasm-build/
+
+# Dependency cache
+.cache/
+node_modules/
+package-lock.json
+Cargo.lock.bak
+
+# Test artifacts
+test_results/
+coverage/
+*.profraw
+*.profdata
+cobertura.xml
+tarpaulin-report.html

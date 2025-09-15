@@ -3,7 +3,7 @@
 
 param([int]$DurationMinutes = 3)
 
-Write-Host "🚀 Starting Simple GPU Max Test" -ForegroundColor Green
+Write-Host "Starting Simple GPU Max Test" -ForegroundColor Green
 Write-Host "Duration: $DurationMinutes minutes" -ForegroundColor Yellow
 
 # Check GPU
@@ -11,11 +11,11 @@ try {
     $gpuInfo = nvidia-smi --query-gpu=name,memory.total --format=csv,noheader,nounits
     if ($LASTEXITCODE -eq 0) {
         $parts = $gpuInfo -split ','
-        Write-Host "✅ GPU: $($parts[0].Trim())" -ForegroundColor Green
-        Write-Host "📊 Memory: $($parts[1].Trim()) MB" -ForegroundColor Green
+        Write-Host "GPU: $($parts[0].Trim())" -ForegroundColor Green
+        Write-Host "Memory: $($parts[1].Trim()) MB" -ForegroundColor Green
     }
 } catch {
-    Write-Host "❌ No GPU detected" -ForegroundColor Red
+    Write-Host "No GPU detected" -ForegroundColor Red
     exit 1
 }
 
@@ -23,7 +23,7 @@ try {
 $env:CUDA_VISIBLE_DEVICES = "0"
 nvidia-smi -pm 1 2>$null | Out-Null
 
-Write-Host "🔥 GPU optimizations applied" -ForegroundColor Green
+Write-Host "GPU optimizations applied" -ForegroundColor Green
 
 # Create simple CUDA test
 $cudaCode = @"
@@ -66,21 +66,18 @@ int main() {
 $cudaCode | Out-File -FilePath "simple_gpu.cu" -Encoding UTF8
 
 # Try to compile
-try {
-    $nvcc = "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin\nvcc.exe"
-    if (Test-Path $nvcc) {
-        & $nvcc simple_gpu.cu -o simple_gpu.exe -arch=sm_75 -O3 2>$null
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "✅ CUDA test compiled" -ForegroundColor Green
-            $useCuda = $true
-        } else {
-            $useCuda = $false
-        }
+$useCuda = $false
+$nvcc = "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin\nvcc.exe"
+if (Test-Path $nvcc) {
+    & $nvcc simple_gpu.cu -o simple_gpu.exe -arch=sm_75 -O3 2>$null
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "CUDA test compiled" -ForegroundColor Green
+        $useCuda = $true
     } else {
-        $useCuda = $false
+        Write-Host "CUDA compilation failed" -ForegroundColor Yellow
     }
-} catch {
-    $useCuda = $false
+} else {
+    Write-Host "NVCC not found" -ForegroundColor Yellow
 }
 
 # Start monitoring
@@ -109,12 +106,12 @@ $monitorJob = Start-Job -ScriptBlock {
         Start-Sleep -Seconds 2
     }
 
-    Write-Host "`n🎯 MAX GPU UTILIZATION: $maxUtil%" -ForegroundColor Green
+    Write-Host "MAX GPU UTILIZATION: $maxUtil%" -ForegroundColor Green
 }
 
 # Run GPU test
 if ($useCuda) {
-    Write-Host "🔥 Running CUDA GPU test..." -ForegroundColor Red
+    Write-Host "Running CUDA GPU test..." -ForegroundColor Red
     $testJob = Start-Job -ScriptBlock {
         try {
             & ".\simple_gpu.exe"
@@ -123,7 +120,7 @@ if ($useCuda) {
         }
     }
 } else {
-    Write-Host "⚠️ CUDA not available, using CPU fallback" -ForegroundColor Yellow
+    Write-Host "CUDA not available, using CPU fallback" -ForegroundColor Yellow
     $testJob = Start-Job -ScriptBlock {
         param($Duration)
         $end = (Get-Date).AddMinutes($Duration)
@@ -142,4 +139,4 @@ Stop-Job $monitorJob, $testJob -Force
 if (Test-Path "simple_gpu.cu") { Remove-Item "simple_gpu.cu" }
 if (Test-Path "simple_gpu.exe") { Remove-Item "simple_gpu.exe" }
 
-Write-Host "✅ GPU test completed!" -ForegroundColor Green
+Write-Host "GPU test completed!" -ForegroundColor Green
